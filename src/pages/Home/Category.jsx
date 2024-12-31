@@ -8,14 +8,20 @@ import slide2 from '../../assets/home/slide2.jpg'
 import slide3 from '../../assets/home/slide3.jpg'
 import slide4 from '../../assets/home/slide4.jpg'
 import slide5 from '../../assets/home/slide5.jpg'
+import SectionTitle from '../../components/SectionTitle';
 
 const Category = () => {
     return (
         <div className='my-12 w-4/5 mx-auto'>
+            <SectionTitle
+                subHeading={"---From 11:00am to 10:00pm---"}
+                heading={"Order Online"}
+            ></SectionTitle>
             <Swiper
                 slidesPerView={4}
                 spaceBetween={30}
                 centeredSlides={true}
+                loop={true}
                 pagination={{
                     clickable: true,
                 }}
@@ -39,10 +45,16 @@ const Category = () => {
                     <img className='object-cover w-full h-[400px]' src={slide4} alt="" />
                     <p className='text-3xl font-medium italic shadow-2xl text-white uppercase text-center -mt-24' style={{'textShadow': "4px 4px 4px rgba(0, 0, 0, 0.5)"}}>Dessert</p>
                 </SwiperSlide>
+                
                 <SwiperSlide className=''>
                     <img className='object-cover w-full h-[400px]' src={slide5} alt="" />
                     <p className='text-3xl font-medium italic shadow-2xl text-white uppercase text-center -mt-24' style={{'textShadow': "4px 4px 4px rgba(0, 0, 0, 0.5)"}}>Salad</p>
                 </SwiperSlide>
+                <SwiperSlide className=''>
+                    <img className='object-cover w-full h-[400px]' src={slide3} alt="" />
+                    <p className='text-3xl font-medium italic shadow-2xl text-white uppercase text-center -mt-24' style={{'textShadow': "4px 4px 4px rgba(0, 0, 0, 0.5)"}}>Soup</p>
+                </SwiperSlide>
+                
             </Swiper>
         </div>
     );
