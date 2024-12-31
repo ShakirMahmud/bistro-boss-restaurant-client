@@ -3,7 +3,7 @@ import featuredImg from "../../assets/home/featured.jpg";
 import { Link } from "react-router-dom";
 const Featured = () => {
     return (
-        <div className="featuredItem py-[130px] px-[300px] my-12">
+        <div className="featuredItem bg-fixed pt-[100px] pb-[130px] px-[300px] my-12">
             <SectionTitle
                 subHeading={"---Check It Out---"}
                 heading={"Featured Item"}
