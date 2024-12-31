@@ -4,3 +4,25 @@
 @tailwind components;
 @tailwind utilities;
 
+.featuredItem {
+    position: relative;
+    background-image: url("/src/assets/home/featured.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 848px;
+    z-index: 1;
+    color: white;
+}
+/* blur  */
+.featuredItem::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+    backdrop-filter: blur(10px); /* Adjust the blur intensity here */
+    z-index: -1;
+}
