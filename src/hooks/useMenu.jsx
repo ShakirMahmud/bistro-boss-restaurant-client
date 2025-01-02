@@ -5,6 +5,7 @@ const useMenu = () => {
     const [loading, setLoading] = useState(true);
     
         useEffect(() => {
+            window.scrollTo(0, 0);
             fetch('menu.json')
                 .then(res => res.json())
                 .then(data => {
