@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
+const getActiveClass = ({ isActive }) =>'font-bold  ' + (isActive ? "text-[#EEFF25]" : "text-white");
 const Navbar = () => {
     const links = <>
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/menu">Our Menu</Link></li>
+        <li><NavLink className={getActiveClass} to="/">Home</NavLink></li>
+        <li><NavLink className={getActiveClass} to="/menu">Our Menu</NavLink></li>
         
     </>
     return (
@@ -27,7 +28,7 @@ const Navbar = () => {
                         </div>
                         <ul
                             tabIndex={0}
-                            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+                            className="gap-4 menu-sm dropdown-content bg-[#151515] rounded-box z-[1] mt-3 w-52 p-2 shadow">
                                 {links}
                         </ul>
                     </div>
@@ -38,7 +39,7 @@ const Navbar = () => {
                     </div>
                 </div>
                 <div className="navbar-center hidden lg:flex">
-                    <ul className="menu menu-horizontal px-1">
+                    <ul className="gap-4 menu-horizontal px-1">
                         {links}
                     </ul>
                 </div>
