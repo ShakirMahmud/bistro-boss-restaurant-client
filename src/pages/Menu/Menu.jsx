@@ -36,28 +36,28 @@ const Menu = () => {
             {/* Desserts  */}
             <MenuCategory
                 items={desserts}
-                title={"Desserts"}
+                title={"dessert"}
                 subTitle={"Indulge your sweet tooth with our delectable selection of desserts. From rich chocolate treats to creamy delights, our desserts are the perfect ending to your meal."}
                 img={dessertImg}
             ></MenuCategory>
             {/* Pizza  */}
             <MenuCategory
                 items={pizzas}
-                title={"Pizza"}
+                title={"pizza"}
                 subTitle={"Enjoy our handcrafted pizzas made with the freshest ingredients. Each slice is a perfect harmony of flavors that will leave you craving for more."}
                 img={pizzaImg}
             ></MenuCategory>
             {/* Salad  */}
             <MenuCategory
                 items={salads}
-                title={"Salads"}
+                title={"salad"}
                 subTitle={"Fresh, crisp, and full of flavor! Our salads are a delightful mix of garden-fresh vegetables and vibrant dressings, perfect for a healthy and satisfying meal."}
                 img={saladImg}
             ></MenuCategory>
             {/* Soup  */}
             <MenuCategory
                 items={soups}
-                title={"Soups"}
+                title={"soup"}
                 subTitle={"Warm up with our comforting soups. Made with love and the finest ingredients, they are the perfect start to your meal or a cozy treat on a cold day."}
                 img={soupImg}
             ></MenuCategory>
