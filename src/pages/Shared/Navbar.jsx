@@ -5,7 +5,7 @@ const Navbar = () => {
     const links = <>
         <li><NavLink className={getActiveClass} to="/">Home</NavLink></li>
         <li><NavLink className={getActiveClass} to="/menu">Our Menu</NavLink></li>
-        <li><NavLink className={getActiveClass} to="/order">Our Shop </NavLink></li>
+        <li><NavLink className={getActiveClass} to="/order/salad">Our Shop </NavLink></li>
         
     </>
     return (
