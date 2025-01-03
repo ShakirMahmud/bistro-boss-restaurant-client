@@ -26,18 +26,45 @@
     backdrop-filter: blur(10px); /* Adjust the blur intensity here */
     z-index: -1;
 }
-.react-tabs__tab-list{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 50px;
-    font-size: 1.5rem;
-    font-weight: 500;
-    outline: none !important;
-    border: none !important;
+
+
+/* Add these styles to your CSS file */
+.custom-tabs [role="tab"] {
+    user-select: none;
+    position: relative;
 }
-.react-tabs__tab-list .react-tabs__tab--selected {
+
+.custom-tabs [role="tab"][aria-selected="true"] {
     color: rgb(187, 133, 6);
-    border: none;
-    border-bottom: 3px solid rgb(187, 133, 6);
+}
+
+.custom-tabs [role="tab"][aria-selected="true"]::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: rgb(187, 133, 6);
+}
+
+/* Remove default react-tabs styles */
+.react-tabs__tab--selected {
+    border: none !important;
+    background: transparent !important;
+}
+
+.react-tabs__tab:focus {
+    box-shadow: none !important;
+    border-color: transparent !important;
+}
+
+/* Make tab list scrollable on mobile */
+.react-tabs__tab-list {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+.react-tabs__tab-list::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
 }

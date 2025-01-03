@@ -1,11 +1,12 @@
 import { Link, NavLink } from "react-router-dom";
+import SignUp from './../authPages/SignUp';
 
 const getActiveClass = ({ isActive }) =>'font-bold  ' + (isActive ? "text-[#EEFF25]" : "text-white");
 const Navbar = () => {
     const links = <>
         <li><NavLink className={getActiveClass} to="/">Home</NavLink></li>
         <li><NavLink className={getActiveClass} to="/menu">Our Menu</NavLink></li>
-        <li><NavLink className={getActiveClass} to="/order/salad">Our Shop </NavLink></li>
+        <li><NavLink className={getActiveClass} to="/order">Our Shop </NavLink></li>
         
     </>
     return (
@@ -45,7 +46,8 @@ const Navbar = () => {
                     </ul>
                 </div>
                 <div className="navbar-end">
-                    <a className="btn">Button</a>
+                    <Link to='/login' className="btn">Login</Link>
+                    <Link to='/signup' className="btn">SignUp</Link>
                 </div>
             </div>
         </div>

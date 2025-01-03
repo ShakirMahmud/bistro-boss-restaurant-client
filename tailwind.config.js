@@ -1,3 +1,4 @@
+
 import daisyui from 'daisyui'
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -6,7 +7,11 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'bgImg': "url('./assets/others/authentication.png')",
+      }
+    },
   },
   plugins: [daisyui],
 }
