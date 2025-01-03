@@ -21,7 +21,7 @@ const MenuCategory = ({ items, img, title, subTitle }) => {
                 </div>
                 <div className="w-full flex justify-center mt-8">
                     <Link
-
+                        to={`/order/${title}`}
                         className="text-base sm:text-lg lg:text-xl text-[#1F2937] border-b-[3px] border-[#1F2937] rounded-lg px-6 py-3 hover:bg-[#1F2937] hover:text-[#BB8506] hover:border-[#BB8506]  transition-all duration-300 uppercase"
                     >
                         Order Your Favorite Food
