@@ -13,8 +13,8 @@ const Cover = ({ img, banner, title, subTitle }) => {
                 <div
                     className={`hero bg-cover bg-fixed ${banner ? " h-[400px]  lg:h-[800px]" : " h-[350px] lg:h-[700px]"}`}
                     >
-                    <div className="hero-overlay bg-opacity-60"></div>
-                    <div className=" w-2/3 text-neutral-content text-center">
+                    <div className="hero-overlay bg-opacity-20 -z-10"></div>
+                    <div className=" w-2/3 text-neutral-content text-center z-10">
                         <div className=" bg-[#15151599] py-12 lg:py-36">
                             <h1 className={`${banner ? "text-6xl" : "text-4xl"} mb-5  font-bold uppercase`}>{title}</h1>
                             <p className="mb-5">

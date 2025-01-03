@@ -26,3 +26,18 @@
     backdrop-filter: blur(10px); /* Adjust the blur intensity here */
     z-index: -1;
 }
+.react-tabs__tab-list{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    font-size: 1.5rem;
+    font-weight: 500;
+    outline: none !important;
+    border: none !important;
+}
+.react-tabs__tab-list .react-tabs__tab--selected {
+    color: rgb(187, 133, 6);
+    border: none;
+    border-bottom: 3px solid rgb(187, 133, 6);
+}
