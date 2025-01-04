@@ -6,12 +6,22 @@ import { Helmet } from 'react-helmet-async';
 import loginImg from '../../assets/others/authentication2.png'
 import useAuth from '../../hooks/useAuth';
 import Swal from 'sweetalert2';
+import { useForm } from 'react-hook-form';
 
 const SignUp = () => {
     const [isClicked, setIsClicked] = useState(true);
     const { createUser, signInWithGoogle, updateUserProfile, setUser } = useAuth();
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors },
+    } = useForm();
+    const onSubmit = (data) => {
+        console.log(data)
+    };
 
     const sweetAlert = () => {
         Swal.fire({
