@@ -10,6 +10,11 @@ const SignUp = () => {
 
     const handleSignUp = (e) => {
         e.preventDefault();
+        const form = e.target;
+        const email = form.email.value;
+        const password = form.password.value;
+        const photoURL = form.photoURL.value;
+        const user = { email, password, photoURL };
     }
 
     const handleSignInWithGoogle = () => {
