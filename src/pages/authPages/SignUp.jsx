@@ -56,7 +56,7 @@ const SignUp = () => {
                             </label>
                         </div>
                         <div className="form-control mt-6">
-                            <button type='submit' className="btn btn-primary bg-btn_bg rounded-xl text-white">Sign Up</button>
+                            <button type='submit' className="btn btn-primary bg-[#BB8506] border-none rounded-xl text-white">Sign Up</button>
                         </div>
                     </form>
                     <div className="text-center mt-6">

@@ -68,3 +68,11 @@
 .react-tabs__tab-list::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera */
 }
+
+#canv{
+    border-radius: 8px;
+    border: 0.075rem solid #80808050;
+}
+#reload_href{
+    color: black !important;
+}

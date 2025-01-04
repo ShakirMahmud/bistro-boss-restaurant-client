@@ -1,18 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import loginImg from '../../assets/others/authentication2.png'
+import { loadCaptchaEnginge, LoadCanvasTemplate, LoadCanvasTemplateNoReload, validateCaptcha } from 'react-simple-captcha';
+import { fire } from './../../../node_modules/sweetalert2/src/staticMethods/fire';
+import Swal from 'sweetalert2';
 
 const Login = () => {
     const [isClicked, setIsClicked] = useState(true);
+    const captchaRef = useRef(null);
+
+    useEffect(() => {
+        loadCaptchaEnginge(6);
+    }, [])
 
     const handleSignIn = (e) => {
         e.preventDefault();
         const form = e.target;
         const email = form.email.value;
         const password = form.password.value;
+        const captcha = captchaRef.current.value;
+        if (!validateCaptcha(captcha)) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: 'Invalid Captcha',
+                showConfirmButton: false,
+                timer: 1500
+            })
+            return;
+        }
     }
 
     const handleSignInWithGoogle = () => {
@@ -48,8 +67,14 @@ const Login = () => {
                                 <Link to='/auth/forgetPassword' className="label-text-alt link link-hover">Forgot password?</Link>
                             </label>
                         </div>
+                        <div className="form-control">
+                            <label className="label">
+                                <LoadCanvasTemplate />
+                            </label>
+                            <input ref={captchaRef} type='text' name='captcha' placeholder="Type the captcha here" className="input rounded-xl input-bordered" required />
+                        </div>
                         <div className="form-control mt-6">
-                            <button type='submit' className="btn btn-primary bg-btn_bg rounded-xl text-white">Login</button>
+                            <button type='submit' className="btn btn-primary bg-[#BB8506] border-none rounded-xl text-white">Login</button>
                         </div>
                     </form>
                     <div className="text-center mt-6">
