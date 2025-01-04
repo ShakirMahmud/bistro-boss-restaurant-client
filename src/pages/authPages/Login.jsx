@@ -1,16 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import loginImg from '../../assets/others/authentication2.png'
-import { loadCaptchaEnginge, LoadCanvasTemplate, LoadCanvasTemplateNoReload, validateCaptcha } from 'react-simple-captcha';
-import { fire } from './../../../node_modules/sweetalert2/src/staticMethods/fire';
+import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
 import Swal from 'sweetalert2';
+import useAuth from '../../hooks/useAuth';
 
 const Login = () => {
     const [isClicked, setIsClicked] = useState(true);
     const captchaRef = useRef(null);
+    const { userLogin, setUser, signInWithGoogle } = useAuth();
+    const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         loadCaptchaEnginge(6);
@@ -24,18 +27,71 @@ const Login = () => {
         const captcha = captchaRef.current.value;
         if (!validateCaptcha(captcha)) {
             Swal.fire({
-                position: 'top-end',
                 icon: 'error',
                 title: 'Invalid Captcha',
+                toast: true,
+                position: 'top-end',
+                timer: 3000,
+                timerProgressBar: true,
                 showConfirmButton: false,
-                timer: 1500
             })
             return;
         }
-    }
+        userLogin(email, password)
+            .then((result) => {
+                setUser(result.user);
+                Swal.fire({
+                    title: "Sign-In Successful!",
+                    text: "You have successfully signed in. You will be redirected shortly, or click OK to proceed immediately.",
+                    icon: "success",
+                    confirmButtonText: "OK",
+                    timer: 3000,
+                    timerProgressBar: true,
+                })
+                    .then((result) => {
+                        if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
+                            navigate(location?.state ? location?.state : '/');
+                        }
+                    })
+            })
+            .catch(() => {
+                Swal.fire({
+                    title: "Sign-In Failed!",
+                    text: 'Wrong email or password',
+                    icon: "error",
+                    confirmButtonText: "Try Again",
+                })
+            })
+    };
+
 
     const handleSignInWithGoogle = () => {
-
+        signInWithGoogle()
+            .then((result) => {
+                setUser(result.user);
+                // const user = { name: result.user.displayName, photo: result.user.photoURL, email: result.user.email };
+                // postToDB(user);
+                Swal.fire({
+                    title: "Sign-In with Google Successful!",
+                    text: "You have successfully signed in using Google. You will be redirected shortly, or click OK to proceed immediately.",
+                    icon: "success",
+                    confirmButtonText: "OK",
+                    timer: 3000,
+                    timerProgressBar: true,
+                }).then((result) => {
+                    if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
+                        navigate(location?.state ? location?.state : '/');
+                    }
+                })
+            })
+            .catch((error) => {
+                Swal.fire({
+                    title: "Sign-In Failed!",
+                    text: 'An error occurred while signing in with Google',
+                    icon: "error",
+                    confirmButtonText: "Try Again",
+                })
+            })
     }
 
     return (

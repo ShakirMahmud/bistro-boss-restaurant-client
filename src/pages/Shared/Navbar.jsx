@@ -1,8 +1,10 @@
 import { Link, NavLink } from "react-router-dom";
 import SignUp from './../authPages/SignUp';
+import useAuth from "../../hooks/useAuth";
 
 const getActiveClass = ({ isActive }) =>'font-bold  ' + (isActive ? "text-[#EEFF25]" : "text-white");
 const Navbar = () => {
+    const { user, logOut, loading } = useAuth();
     const links = <>
         <li><NavLink className={getActiveClass} to="/">Home</NavLink></li>
         <li><NavLink className={getActiveClass} to="/menu">Our Menu</NavLink></li>
@@ -46,8 +48,11 @@ const Navbar = () => {
                     </ul>
                 </div>
                 <div className="navbar-end">
-                    <Link to='/login' className="btn">Login</Link>
-                    <Link to='/signup' className="btn">SignUp</Link>
+                   {
+                    user?.email ? 
+                    <button onClick={logOut} className="btn btn-outline text-white">Logout</button>:
+                    <Link to="/login"><button className="btn btn-outline text-white">Login</button></Link>
+                   }
                 </div>
             </div>
         </div>

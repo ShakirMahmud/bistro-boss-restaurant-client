@@ -1,24 +1,88 @@
 import React, { useState } from 'react';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import loginImg from '../../assets/others/authentication2.png'
+import useAuth from '../../hooks/useAuth';
+import Swal from 'sweetalert2';
 
 const SignUp = () => {
     const [isClicked, setIsClicked] = useState(true);
+    const { createUser, signInWithGoogle, updateUserProfile, setUser } = useAuth();
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
+
+    const sweetAlert = () => {
+        Swal.fire({
+            title: "Sign-Up Successful!",
+            text: "You have successfully signed up. You will be redirected shortly, or click OK to proceed immediately.",
+            icon: "success",
+            confirmButtonText: "OK",
+            timer: 3000,
+            timerProgressBar: true,
+        }).then((result) => {
+            if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
+                navigate("/");
+            }
+        });
+    };
 
     const handleSignUp = (e) => {
         e.preventDefault();
         const form = e.target;
+        const name = form.name.value;
+        const photo = form.photo.value;
         const email = form.email.value;
         const password = form.password.value;
-        const photoURL = form.photoURL.value;
-        const user = { email, password, photoURL };
+        // const user = { email, password, photoURL };
+        // validate user with one uppercase, one lowercase, and 6 characters
+        const hasUppercase = /[A-Z]/.test(password);
+        const hasLowercase = /[a-z]/.test(password);
+        const isValidLength = password.length >= 6;
+
+        if (!hasUppercase) {
+            setError("Password must contain at least one uppercase letter.");
+            return;
+        }
+        if (!hasLowercase) {
+            setError("Password must contain at least one lowercase letter.");
+            return;
+        }
+        if (!isValidLength) {
+            setError("Password must be at least 6 characters long.");
+            return;
+        }
+        createUser(email, password)
+            .then((result) => {
+                setUser(result.user);
+                setError('');
+                // const user = { name, photo, email };
+                // postToDB(user);
+                updateUserProfile({ displayName: name, photoURL: photo })
+                    .then(() => {
+                        sweetAlert();
+                    })
+                    .catch((error) => {
+                        setError(error.message);
+                    });
+            })
+            .catch((error) => {
+                setError(error.message);
+            });
     }
 
     const handleSignInWithGoogle = () => {
-
+        signInWithGoogle()
+            .then((result) => {
+                setUser(result.user);
+                // const user = { name: result.user.displayName, photo: result.user.photoURL, email: result.user.email };
+                // postToDB(user);
+                sweetAlert();
+            })
+            .catch((error) => {
+                setError(error.message);
+            });
     }
 
     return (
@@ -56,6 +120,9 @@ const SignUp = () => {
                                     isClicked ? <AiOutlineEye /> : <AiOutlineEyeInvisible />
                                 }
                             </button>
+                            {
+                                error && <p className='text-red-600'>{error}</p>
+                            }
                             <label className="label">
                                 <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
                             </label>
