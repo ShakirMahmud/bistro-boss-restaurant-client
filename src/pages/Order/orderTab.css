@@ -1,7 +1,7 @@
 /* Base styles */
 .swiper {
     width: 100%;
-    padding-bottom: 120px !important; /* Increased to accommodate multiple lines */
+    padding-bottom: 120px ; /* Increased to accommodate multiple lines */
 }
 
 .swiper-slide {
@@ -18,35 +18,35 @@
 .swiper-horizontal > .swiper-pagination-bullets,
 .swiper-pagination-bullets.swiper-pagination-horizontal,
 .swiper-pagination {
-    display: flex !important;
-    flex-wrap: wrap !important;
+    display: flex ;
+    flex-wrap: wrap ;
     justify-content: center;
     align-items: center;
-    bottom: 10px !important;
-    padding: 10px !important;
-    width: 100% !important;
-    white-space: normal !important; /* Allow wrapping */
-    row-gap: 10px !important;
-    height: auto !important;
+    bottom: 10px ;
+    padding: 10px ;
+    width: 100% ;
+    white-space: normal ; /* Allow wrapping */
+    row-gap: 10px ;
+    height: auto ;
     min-height: 50px;
 }
 
 /* Bullet styles */
 .swiper-pagination-bullet {
-    display: inline-flex !important;
+    display: inline-flex ;
     align-items: center;
     justify-content: center;
-    min-width: 32px !important;
-    min-height: 32px !important;
-    width: 32px !important;
-    height: 32px !important;
-    margin: 4px !important;
+    min-width: 32px ;
+    min-height: 32px ;
+    width: 32px ;
+    height: 32px ;
+    margin: 4px ;
     font-size: 14px;
     color: #000;
     opacity: 1;
     background: rgba(0, 0, 0, 0.2);
     border-radius: 50%;
-    position: relative !important;
+    position: relative ;
 }
 
 .swiper-pagination-bullet-active {
@@ -57,21 +57,21 @@
 /* Mobile specific styles */
 @media screen and (max-width: 768px) {
     .swiper {
-        padding-bottom: 100px !important;
+        padding-bottom: 100px ;
     }
 
     .swiper-pagination {
-        padding: 5px !important;
-        bottom: 0 !important;
-        row-gap: 8px !important;
+        padding: 5px ;
+        bottom: 0 ;
+        row-gap: 8px ;
     }
 
     .swiper-pagination-bullet {
-        min-width: 28px !important;
-        min-height: 28px !important;
-        width: 28px !important;
-        height: 28px !important;
-        margin: 3px !important;
+        min-width: 28px ;
+        min-height: 28px ;
+        width: 28px ;
+        height: 28px ;
+        margin: 3px ;
         font-size: 13px;
     }
 }

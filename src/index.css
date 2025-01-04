@@ -59,15 +59,6 @@
     border-color: transparent !important;
 }
 
-/* Make tab list scrollable on mobile */
-.react-tabs__tab-list {
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
-}
-
-.react-tabs__tab-list::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-}
 
 #canv{
     border-radius: 8px;

@@ -6,22 +6,12 @@ import { Helmet } from 'react-helmet-async';
 import loginImg from '../../assets/others/authentication2.png'
 import useAuth from '../../hooks/useAuth';
 import Swal from 'sweetalert2';
-import { useForm } from 'react-hook-form';
 
 const SignUp = () => {
     const [isClicked, setIsClicked] = useState(true);
     const { createUser, signInWithGoogle, updateUserProfile, setUser } = useAuth();
     const [error, setError] = useState('');
     const navigate = useNavigate();
-    const {
-        register,
-        handleSubmit,
-        watch,
-        formState: { errors },
-    } = useForm();
-    const onSubmit = (data) => {
-        console.log(data)
-    };
 
     const sweetAlert = () => {
         Swal.fire({
@@ -98,7 +88,7 @@ const SignUp = () => {
     return (
         <div className='min-h-screen bg-bgImg flex items-center '>
             <Helmet>
-                <title>Bistro Boss | Login</title>
+                <title>Bistro Boss | Sign Up</title>
             </Helmet>
             <div className='w-4/5 mx-auto flex flex-row-reverse justify-center gap-0 items-center border-2 shadow-lg '>
                 <div className='w-1/2 rounded-xl flex items-stretch'>
