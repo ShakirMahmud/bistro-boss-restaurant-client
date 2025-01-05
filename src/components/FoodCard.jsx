@@ -1,4 +1,7 @@
 const FoodCard = ({ item }) => {
+    const handleAddToCart = (food) => {
+        console.log('Add to Cart', food);
+    };
     return (
         <div
             className="relative bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition duration-300 flex flex-col min-h-[400px]"
@@ -22,7 +25,9 @@ const FoodCard = ({ item }) => {
 
                 {/* Button */}
                 <div className="mt-auto">
-                    <button className="w-full text-xl font-medium bg-[#E8E8E8] text-[#BB8506] py-2 px-4 rounded-lg border-b-4 border-[#BB8506] hover:bg-[#1F2937] transition duration-300">
+                    <button
+                    onClick={()=>handleAddToCart(item)}
+                     className="w-full text-xl font-medium bg-[#E8E8E8] text-[#BB8506] py-2 px-4 rounded-lg border-b-4 border-[#BB8506] hover:bg-[#1F2937] transition duration-300">
                         Add to Cart
                     </button>
                 </div>
