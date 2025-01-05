@@ -1,10 +1,12 @@
 import { Link, NavLink } from "react-router-dom";
 import SignUp from './../authPages/SignUp';
 import useAuth from "../../hooks/useAuth";
+import useCart from "../../hooks/useCart";
 
 const getActiveClass = ({ isActive }) => 'font-bold  ' + (isActive ? "text-[#EEFF25]" : "text-white");
 const Navbar = () => {
     const { user, logOut, loading } = useAuth();
+    const [cart ] = useCart();
 
     const links = <>
         <li><NavLink className={getActiveClass} to="/">Home</NavLink></li>
@@ -68,7 +70,7 @@ const Navbar = () => {
                         <span
                             className="absolute -top-2 -right-2 bg-white bg-opacity-90 text-black rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold"
                         >
-                            10
+                            {cart?.length}
                         </span>
                     </div>
                     {

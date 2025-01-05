@@ -1,16 +1,45 @@
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import useAuth from './../hooks/useAuth';
+import useAxiosSecure from './../hooks/useAxiosSecure';
 
 const FoodCard = ({ item }) => {
     const { user } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
+    const axiosSecure = useAxiosSecure();
     const handleAddToCart = (food) => {
-        if(user && user.email){
+        if (user && user.email) {
             // TODO: add to the database
+            const cartItem = {
+                menuId: item._id,
+                email: user.email,
+                name: item.name,
+                recipe: item.recipe,
+                image: item.image,
+                category: item.category,
+                price: item.price,
+            };
+            console.log(cartItem);
+            axiosSecure.post('/carts', cartItem)
+                .then(data => {
+                    if (data.data.insertedId) {
+                        Swal.fire({
+                            title: 'Added to Cart',
+                            text: 'The item has been added to your cart',
+                            icon: 'success',
+                            toast: true,
+                            position: 'top-end',
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showConfirmButton: false,
+                        });
+                    }
+                })
+
+
         }
-        else{
+        else {
             Swal.fire({
                 title: 'You are not logged in',
                 text: 'Please login to add to cart',
@@ -22,7 +51,7 @@ const FoodCard = ({ item }) => {
             }).then((result) => {
                 if (result.isConfirmed) {
                     // Redirect to login page
-                    navigate('/login', {state: location.pathname});
+                    navigate('/login', { state: location.pathname });
                 }
             });
         }
@@ -51,8 +80,8 @@ const FoodCard = ({ item }) => {
                 {/* Button */}
                 <div className="mt-auto">
                     <button
-                    onClick={()=>handleAddToCart(item)}
-                     className="w-full text-xl font-medium bg-[#E8E8E8] text-[#BB8506] py-2 px-4 rounded-lg border-b-4 border-[#BB8506] hover:bg-[#1F2937] transition duration-300">
+                        onClick={() => handleAddToCart(item)}
+                        className="w-full text-xl font-medium bg-[#E8E8E8] text-[#BB8506] py-2 px-4 rounded-lg border-b-4 border-[#BB8506] hover:bg-[#1F2937] transition duration-300">
                         Add to Cart
                     </button>
                 </div>
