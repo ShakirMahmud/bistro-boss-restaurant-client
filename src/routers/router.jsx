@@ -8,6 +8,7 @@ import SignUp from "../pages/authPages/SignUp";
 import PrivateRoute from "./PrivateRoute";
 import Dashboard from "../Layout/Dashboard";
 import Cart from "../pages/dashboard/cart/Cart";
+import Cart2 from "../pages/dashboard/cart/Cart2";
 
 export const router = createBrowserRouter([
     {

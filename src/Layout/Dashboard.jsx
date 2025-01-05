@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { BsFillCalendar3EventFill } from "react-icons/bs"; 
-import { FaCalendar, FaHome, FaShoppingCart, FaStar, FaWallet, FaBars, FaTimes } from "react-icons/fa";
+import { FaCalendar, FaHome, FaShoppingCart, FaStar, FaWallet, FaBars, FaTimes, FaList } from "react-icons/fa";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import useAuth from '../hooks/useAuth';
 
@@ -12,6 +12,7 @@ const getActiveClass = ({ isActive }) =>
   }`;
 
 const Dashboard = () => {
+    
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const {logOut} = useAuth();
 
@@ -74,9 +75,15 @@ const Dashboard = () => {
                 <div className="w-4/5 mx-auto space-y-4">
                     <NavLink 
                         to="/" 
-                        className="flex items-center gap-3 text-white hover:bg-[#a77b3f] px-4 py-2 rounded-lg"
+                        className="flex items-center gap-3 text-lg text-white hover:bg-[#a77b3f] px-4 py-2 rounded-lg"
                     >
                         <FaHome /> Home
+                    </NavLink>
+                    <NavLink 
+                        to="/menu" 
+                        className="flex items-center gap-3 text-lg text-white hover:bg-[#a77b3f] px-4 py-2 rounded-lg"
+                    >
+                        <FaList /> Menu
                     </NavLink>
                     <button onClick={logOut}
                         className="w-full flex items-center gap-3 text-white hover:bg-[#a77b3f] px-4 py-2 rounded-lg"
@@ -95,7 +102,7 @@ const Dashboard = () => {
             )}
 
             {/* Main Content */}
-            <div className="flex-1 w-full md:w-4/5 ml-0 md:ml-auto p-4 md:p-8">
+            <div className="flex-1 w-full md:w-4/5 ml-0 md:ml-auto">
                 <Outlet />
             </div>
         </div>

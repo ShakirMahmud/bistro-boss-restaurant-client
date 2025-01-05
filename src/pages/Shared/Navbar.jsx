@@ -1,5 +1,4 @@
 import { Link, NavLink } from "react-router-dom";
-import SignUp from './../authPages/SignUp';
 import useAuth from "../../hooks/useAuth";
 import useCart from "../../hooks/useCart";
 
