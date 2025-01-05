@@ -40,7 +40,7 @@ const Navbar = () => {
                         </ul>
                     </div>
                     <div>
-                        <Link><h1 className="text-2xl font-bold">Bistro Boss</h1>
+                        <Link to={'/'}><h1 className="text-2xl font-bold">Bistro Boss</h1>
                             <p className="text-sm">R E S T A U R A N T</p>
                         </Link>
                     </div>
@@ -51,7 +51,7 @@ const Navbar = () => {
                     </ul>
                 </div>
                 <div className="navbar-end">
-                    <div className="relative mr-5 lg:mr-10">
+                    <Link to='/dashboard/cart' className="relative mr-5 lg:mr-10">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="h-8 w-8 text-[#EEFF25] hover:text-gray-900 cursor-pointer"
@@ -72,7 +72,7 @@ const Navbar = () => {
                         >
                             {cart?.length}
                         </span>
-                    </div>
+                    </Link>
                     {
                         user?.email ?
                             <button onClick={logOut} className="btn btn-outline text-white">Logout</button> :

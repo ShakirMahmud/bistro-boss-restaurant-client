@@ -21,6 +21,7 @@ const FoodCard = ({ item }) => {
                 image: item.image,
                 category: item.category,
                 price: item.price,
+                addedDate: Date.now(),
             };
             // Add to cart to the database
             axiosSecure.post('/carts', cartItem)
