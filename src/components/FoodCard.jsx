@@ -2,15 +2,17 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import useAuth from './../hooks/useAuth';
 import useAxiosSecure from './../hooks/useAxiosSecure';
+import useCart from "../hooks/useCart";
 
 const FoodCard = ({ item }) => {
     const { user } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const axiosSecure = useAxiosSecure();
-    const handleAddToCart = (food) => {
+    const [, refetch] = useCart();
+    const handleAddToCart = () => {
         if (user && user.email) {
-            // TODO: add to the database
+            
             const cartItem = {
                 menuId: item._id,
                 email: user.email,
@@ -20,7 +22,7 @@ const FoodCard = ({ item }) => {
                 category: item.category,
                 price: item.price,
             };
-            console.log(cartItem);
+            // Add to cart to the database
             axiosSecure.post('/carts', cartItem)
                 .then(data => {
                     if (data.data.insertedId) {
@@ -29,11 +31,13 @@ const FoodCard = ({ item }) => {
                             text: 'The item has been added to your cart',
                             icon: 'success',
                             toast: true,
-                            position: 'top-end',
+                            position: 'bottom-end',
                             timer: 3000,
                             timerProgressBar: true,
                             showConfirmButton: false,
                         });
+                        // Refetch the cart to update the cart count
+                        refetch();
                     }
                 })
 
@@ -80,7 +84,7 @@ const FoodCard = ({ item }) => {
                 {/* Button */}
                 <div className="mt-auto">
                     <button
-                        onClick={() => handleAddToCart(item)}
+                        onClick={handleAddToCart}
                         className="w-full text-xl font-medium bg-[#E8E8E8] text-[#BB8506] py-2 px-4 rounded-lg border-b-4 border-[#BB8506] hover:bg-[#1F2937] transition duration-300">
                         Add to Cart
                     </button>
