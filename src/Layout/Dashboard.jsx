@@ -1,27 +1,36 @@
 import { useState } from 'react';
-import { BsFillCalendar3EventFill } from "react-icons/bs"; 
-import { FaCalendar, FaHome, FaShoppingCart, FaStar, FaWallet, FaBars, FaTimes, FaList } from "react-icons/fa";
+import { BsFillCalendar3EventFill } from "react-icons/bs";
+import { FaCalendar, FaHome, FaShoppingCart, FaStar, FaWallet, FaBars, FaTimes, FaList, FaUtensils, FaUsers } from "react-icons/fa";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import useAuth from '../hooks/useAuth';
 
-const getActiveClass = ({ isActive }) => 
-  `flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-300 ${
-    isActive 
-      ? "bg-white text-[#D1A054] font-semibold" 
-      : "text-white hover:bg-[#a77b3f]"
-  }`;
+const getActiveClass = ({ isActive }) =>
+    `flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-300 ${isActive
+        ? "bg-white text-[#D1A054] font-semibold"
+        : "text-white hover:bg-[#a77b3f]"
+    }`;
 
 const Dashboard = () => {
-    
+
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const {logOut} = useAuth();
+    const { logOut } = useAuth();
 
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
 
-    const menuItems = [
-        { icon: <FaHome />, text: "My Home", path: "/dashboard/home" },
+    const isAdmin = true;
+
+    const adminLinks = [
+        { icon: <FaHome />, text: "My Home", path: "/dashboard/adminHome" },
+        { icon: <FaUtensils />, text: "Add Item", path: "/dashboard/addItem" },
+        { icon: <FaList />, text: "Manage Items", path: "/dashboard/manageItems" },
+        { icon: <FaCalendar />, text: "Manage Bookings", path: "/dashboard/bookings" },
+        { icon: <FaUsers />, text: "All Users", path: "/dashboard/users" },
+    ];
+
+    const userLinks = [
+        { icon: <FaHome />, text: "My Home", path: "/dashboard/userHome" },
         { icon: <FaWallet />, text: "Payment History", path: "/dashboard/payment" },
         { icon: <FaCalendar />, text: "Reservation", path: "/dashboard/reservation" },
         { icon: <FaShoppingCart />, text: "My Cart", path: "/dashboard/cart" },
@@ -32,7 +41,7 @@ const Dashboard = () => {
     return (
         <div className="flex relative ">
             {/* Mobile Hamburger Button */}
-            <button 
+            <button
                 className="md:hidden fixed top-4 left-4 z-50 text-[#D1A054]"
                 onClick={toggleSidebar}
             >
@@ -40,7 +49,7 @@ const Dashboard = () => {
             </button>
 
             {/* Sidebar */}
-            <div 
+            <div
                 className={`
                     fixed md:static top-0 left-0 min-h-screen w-64 bg-[#D1A054] 
                     transform transition-transform duration-300 z-40
@@ -56,31 +65,51 @@ const Dashboard = () => {
                 </div>
 
                 <ul className="w-4/5 mx-auto flex flex-col text-lg gap-4">
-                    {menuItems.map((item, index) => (
-                        <li key={index} className="text-sidebar-text">
-                            <NavLink 
-                                className={getActiveClass} 
-                                to={item.path}
-                                onClick={() => setIsSidebarOpen(false)} // Close sidebar on mobile after selection
-                            >
-                                {item.icon} {item.text}
-                            </NavLink>
-                        </li>
-                    ))}
+                    {
+                        isAdmin ?
+                            (
+                                adminLinks.map((item, index) => (
+                                    <li key={index} className="text-sidebar-text">
+                                        <NavLink
+                                            className={getActiveClass}
+                                            to={item.path}
+                                            onClick={() => setIsSidebarOpen(false)}
+                                        >
+                                            {item.icon} {item.text}
+                                        </NavLink>
+                                    </li>
+                                ))
+                            )
+                            :
+                            (
+                                userLinks.map((item, index) => (
+                                    <li key={index} className="text-sidebar-text">
+                                        <NavLink
+                                            className={getActiveClass}
+                                            to={item.path}
+                                            onClick={() => setIsSidebarOpen(false)}
+                                        >
+                                            {item.icon} {item.text}
+                                        </NavLink>
+                                    </li>
+                                ))
+                            )
+                    }
+
                 </ul>
 
                 <div className="w-4/5 mx-auto my-10 border border-white"></div>
-
+                {/* Shared Links */}
                 {/* Home and Logout Links */}
                 <div className="w-4/5 mx-auto space-y-4">
-                    <NavLink 
-                        to="/" 
+                    <NavLink
+                        to="/"
                         className="flex items-center gap-3 text-lg text-white hover:bg-[#a77b3f] px-4 py-2 rounded-lg"
                     >
                         <FaHome /> Home
                     </NavLink>
-                    <NavLink 
-                        to="/menu" 
+                    <NavLink
+                        to="/menu"
                         className="flex items-center gap-3 text-lg text-white hover:bg-[#a77b3f] px-4 py-2 rounded-lg"
                     >
                         <FaList /> Menu
@@ -95,7 +124,7 @@ const Dashboard = () => {
 
             {/* Overlay for Mobile */}
             {isSidebarOpen && (
-                <div 
+                <div
                     className="fixed inset-0 bg-black/50 z-30 md:hidden"
                     onClick={toggleSidebar}
                 ></div>

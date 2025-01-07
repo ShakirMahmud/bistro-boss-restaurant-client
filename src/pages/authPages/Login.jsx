@@ -20,11 +20,26 @@ const Login = () => {
     const postToDB = (user) => {
         axiosPublic.post('/users', user)
             .then(data => {
-                if(data.data.insertedId){
+                if (data.data.insertedId) {
                     console.log('User added to DB');
                 }
             })
     }
+
+    const sweetAlert = () => {
+        Swal.fire({
+            title: "Sign-Up Successful!",
+            text: "You have successfully signed up. You will be redirected shortly, or click OK to proceed immediately.",
+            icon: "success",
+            confirmButtonText: "OK",
+            timer: 3000,
+            timerProgressBar: true,
+        }).then((result) => {
+            if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
+                navigate("/");
+            }
+        });
+    };
 
     useEffect(() => {
         loadCaptchaEnginge(6);
@@ -51,19 +66,7 @@ const Login = () => {
         userLogin(email, password)
             .then((result) => {
                 setUser(result.user);
-                Swal.fire({
-                    title: "Sign-In Successful!",
-                    text: "You have successfully signed in. You will be redirected shortly, or click OK to proceed immediately.",
-                    icon: "success",
-                    confirmButtonText: "OK",
-                    timer: 3000,
-                    timerProgressBar: true,
-                })
-                    .then((result) => {
-                        if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
-                            navigate(location?.state ? location?.state : '/');
-                        }
-                    })
+                sweetAlert();
             })
             .catch(() => {
                 Swal.fire({
@@ -82,18 +85,7 @@ const Login = () => {
                 setUser(result.user);
                 const user = { name: result.user.displayName, photo: result.user.photoURL, email: result.user.email };
                 postToDB(user);
-                Swal.fire({
-                    title: "Sign-In with Google Successful!",
-                    text: "You have successfully signed in using Google. You will be redirected shortly, or click OK to proceed immediately.",
-                    icon: "success",
-                    confirmButtonText: "OK",
-                    timer: 3000,
-                    timerProgressBar: true,
-                }).then((result) => {
-                    if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
-                        navigate(location?.state ? location?.state : '/');
-                    }
-                })
+                sweetAlert();
             })
             .catch((error) => {
                 Swal.fire({
