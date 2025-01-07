@@ -6,12 +6,23 @@ import { Helmet } from 'react-helmet-async';
 import loginImg from '../../assets/others/authentication2.png'
 import useAuth from '../../hooks/useAuth';
 import Swal from 'sweetalert2';
+import useAxiosPublic from '../../hooks/useAxiosPublic';
 
 const SignUp = () => {
     const [isClicked, setIsClicked] = useState(true);
     const { createUser, signInWithGoogle, updateUserProfile, setUser } = useAuth();
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const axiosPublic = useAxiosPublic();
+
+    const postToDB = (user) => {
+        axiosPublic.post('/users', user)
+            .then(data => {
+                if(data.data.insertedId){
+                    sweetAlert();
+                }
+            })
+    }
 
     const sweetAlert = () => {
         Swal.fire({
@@ -35,7 +46,6 @@ const SignUp = () => {
         const photo = form.photo.value;
         const email = form.email.value;
         const password = form.password.value;
-        // const user = { email, password, photoURL };
         // validate user with one uppercase, one lowercase, and 6 characters
         const hasUppercase = /[A-Z]/.test(password);
         const hasLowercase = /[a-z]/.test(password);
@@ -57,11 +67,11 @@ const SignUp = () => {
             .then((result) => {
                 setUser(result.user);
                 setError('');
-                // const user = { name, photo, email };
-                // postToDB(user);
+                const user = { name, photo, email };
+                postToDB(user);
                 updateUserProfile({ displayName: name, photoURL: photo })
                     .then(() => {
-                        sweetAlert();
+                        // sweetAlert();
                     })
                     .catch((error) => {
                         setError(error.message);
@@ -76,9 +86,9 @@ const SignUp = () => {
         signInWithGoogle()
             .then((result) => {
                 setUser(result.user);
-                // const user = { name: result.user.displayName, photo: result.user.photoURL, email: result.user.email };
-                // postToDB(user);
-                sweetAlert();
+                const user = { name: result.user.displayName, photo: result.user.photoURL, email: result.user.email };
+                postToDB(user);
+                // sweetAlert();
             })
             .catch((error) => {
                 setError(error.message);

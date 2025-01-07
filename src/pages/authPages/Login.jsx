@@ -7,6 +7,7 @@ import loginImg from '../../assets/others/authentication2.png'
 import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
 import Swal from 'sweetalert2';
 import useAuth from '../../hooks/useAuth';
+import useAxiosPublic from '../../hooks/useAxiosPublic';
 
 const Login = () => {
     const [isClicked, setIsClicked] = useState(true);
@@ -14,6 +15,16 @@ const Login = () => {
     const { userLogin, setUser, signInWithGoogle } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
+    const axiosPublic = useAxiosPublic();
+
+    const postToDB = (user) => {
+        axiosPublic.post('/users', user)
+            .then(data => {
+                if(data.data.insertedId){
+                    console.log('User added to DB');
+                }
+            })
+    }
 
     useEffect(() => {
         loadCaptchaEnginge(6);
@@ -69,8 +80,8 @@ const Login = () => {
         signInWithGoogle()
             .then((result) => {
                 setUser(result.user);
-                // const user = { name: result.user.displayName, photo: result.user.photoURL, email: result.user.email };
-                // postToDB(user);
+                const user = { name: result.user.displayName, photo: result.user.photoURL, email: result.user.email };
+                postToDB(user);
                 Swal.fire({
                     title: "Sign-In with Google Successful!",
                     text: "You have successfully signed in using Google. You will be redirected shortly, or click OK to proceed immediately.",
