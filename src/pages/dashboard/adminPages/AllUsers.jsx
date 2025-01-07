@@ -4,6 +4,7 @@ import { FaTrashAlt, FaSpinner, FaUsers } from "react-icons/fa";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import SectionTitle from "../../../components/SectionTitle";
 import Swal from "sweetalert2";
+import { auth } from './../../../firebase/firebase.config';
 
 const AllUsers = () => {
     const axiosSecure = useAxiosSecure();
