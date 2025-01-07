@@ -7,10 +7,10 @@ import Swal from "sweetalert2";
 
 const AllUsers = () => {
     const axiosSecure = useAxiosSecure();
-    const { 
-        isPending, 
-        data: users = [], 
-        refetch 
+    const {
+        isPending,
+        data: users = [],
+        refetch
     } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
@@ -19,35 +19,59 @@ const AllUsers = () => {
         }
     });
 
-    const handleMakeAdmin = (user) => {
+    const handleChangeRole = (user) => {
+
         Swal.fire({
             title: 'Are you sure?',
-            text: `Make ${user.name} an admin?`,
+            text: `${user.role !== 'admin' ? 'Make' : 'Remove'} ${user.name} as ${user.role !== 'admin' ? 'admin' : 'user'}?`,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Yes, make admin!',
+            confirmButtonText: 'Yes, Change!',
             cancelButtonText: 'No, cancel',
         }).then((result) => {
             if (result.isConfirmed) {
-                axiosSecure.patch(`/users/admin/${user._id}`)
-                    .then(response => {
-                        if (response.data.modifiedCount > 0) {
-                            refetch();
-                            Swal.fire({
-                                title: 'Admin Assigned!',
-                                text: `${user.name} is now an admin.`,
-                                icon: 'success',
-                                toast: true,
-                                position: 'bottom-end',
-                                timer: 3000,
-                                timerProgressBar: true,
-                                showConfirmButton: false,
-                            });
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Error making admin:", error);
-                    });
+                if (user.role !== 'admin') {
+                    axiosSecure.patch(`/users/admin/${user._id}`)
+                        .then(response => {
+                            if (response.data.modifiedCount > 0) {
+                                refetch();
+                                Swal.fire({
+                                    title: 'Admin Assigned!',
+                                    text: `${user.name} is now an admin.`,
+                                    icon: 'success',
+                                    toast: true,
+                                    position: 'bottom-end',
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false,
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error making admin:", error);
+                        });
+                }
+                else {
+                    axiosSecure.patch(`/users/user/${user._id}`)
+                        .then(response => {
+                            if (response.data.modifiedCount > 0) {
+                                refetch();
+                                Swal.fire({
+                                    title: 'Admin Removed!',
+                                    text: `${user.name} is no longer an admin.`,
+                                    icon: 'success',
+                                    toast: true,
+                                    position: 'bottom-end',
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false,
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error removing admin:", error);
+                        });
+                }
             }
         });
     };
@@ -127,15 +151,15 @@ const AllUsers = () => {
                         </thead>
                         <tbody>
                             {users.map((user, index) => (
-                                <tr 
-                                    key={user._id} 
+                                <tr
+                                    key={user._id}
                                     className="border-b hover:bg-gray-100 transition duration-300"
                                 >
                                     <td className="px-4 py-3">{index + 1}</td>
                                     <td className="px-4 py-3">
-                                        <img 
-                                            src={user.photo || '/default-avatar.png'} 
-                                            alt={user.name} 
+                                        <img
+                                            src={user.photo || '/default-avatar.png'}
+                                            alt={user.name}
                                             className="w-12 h-12 rounded-full object-cover"
                                         />
                                     </td>
@@ -144,8 +168,8 @@ const AllUsers = () => {
                                     <td className="px-4 py-3 text-center">
                                         <span className={`
                                             px-3 py-1 rounded-full text-xs 
-                                            ${user.role === 'admin' 
-                                                ? 'bg-green-200 text-green-800' 
+                                            ${user.role === 'admin'
+                                                ? 'bg-green-200 text-green-800'
                                                 : 'bg-[#BB8506] text-white'
                                             }
                                         `}>
@@ -154,15 +178,23 @@ const AllUsers = () => {
                                     </td>
                                     <td className="px-4 py-3 text-center">
                                         <div className="flex justify-center items-center space-x-4">
-                                            {user.role !== 'admin' && (
+                                            {user.role === 'admin' ?
                                                 <button
-                                                    onClick={() => handleMakeAdmin(user)}
+                                                    onClick={() => handleChangeRole(user)}
+                                                    className="text-green-500 hover:text-green-700 
+                                                    transition duration-300"
+                                                >
+                                                    👤
+                                                </button>
+                                                :
+                                                <button
+                                                    onClick={() => handleChangeRole(user)}
                                                     className="text-green-500 hover:text-green-700 
                                                     transition duration-300"
                                                 >
                                                     👑
                                                 </button>
-                                            )}
+                                            }
                                             <button
                                                 onClick={() => handleDeleteUser(user)}
                                                 className="text-red-500 hover:text-red-700 
