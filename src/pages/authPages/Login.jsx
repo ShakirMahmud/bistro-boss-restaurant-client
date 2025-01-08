@@ -29,14 +29,14 @@ const Login = () => {
     const sweetAlert = () => {
         Swal.fire({
             title: "Sign-Up Successful!",
-            text: "You have successfully signed up. You will be redirected shortly, or click OK to proceed immediately.",
+            text: "You have successfully signed in. You will be redirected shortly, or click OK to proceed immediately.",
             icon: "success",
             confirmButtonText: "OK",
-            timer: 3000,
+            timer: 2000,
             timerProgressBar: true,
         }).then((result) => {
             if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
-                navigate("/");
+                navigate(location.state?.from ? location.state.from : '/');
             }
         });
     };
@@ -51,18 +51,19 @@ const Login = () => {
         const email = form.email.value;
         const password = form.password.value;
         const captcha = captchaRef.current.value;
-        if (!validateCaptcha(captcha)) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Invalid Captcha',
-                toast: true,
-                position: 'top-end',
-                timer: 3000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-            })
-            return;
-        }
+        //TODO: required captcha validation
+        // if (!validateCaptcha(captcha)) {
+        //     Swal.fire({
+        //         icon: 'error',
+        //         title: 'Invalid Captcha',
+        //         toast: true,
+        //         position: 'top-end',
+        //         timer: 3000,
+        //         timerProgressBar: true,
+        //         showConfirmButton: false,
+        //     })
+        //     return;
+        // }
         userLogin(email, password)
             .then((result) => {
                 setUser(result.user);
@@ -130,7 +131,8 @@ const Login = () => {
                             <label className="label">
                                 <LoadCanvasTemplate />
                             </label>
-                            <input ref={captchaRef} type='text' name='captcha' placeholder="Type the captcha here" className="input rounded-xl input-bordered" required />
+                            {/* TODO: required captcha validation */}
+                            <input ref={captchaRef} type='text' name='captcha' placeholder="Type the captcha here" className="input rounded-xl input-bordered"  />
                         </div>
                         <div className="form-control mt-6">
                             <button type='submit' className="btn btn-primary bg-[#BB8506] border-none rounded-xl text-white">Login</button>

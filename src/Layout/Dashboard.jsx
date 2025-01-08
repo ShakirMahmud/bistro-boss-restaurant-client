@@ -3,6 +3,7 @@ import { BsFillCalendar3EventFill } from "react-icons/bs";
 import { FaCalendar, FaHome, FaShoppingCart, FaStar, FaWallet, FaBars, FaTimes, FaList, FaUtensils, FaUsers } from "react-icons/fa";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import useAuth from '../hooks/useAuth';
+import useAdmin from '../hooks/useAdmin';
 
 const getActiveClass = ({ isActive }) =>
     `flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-300 ${isActive
@@ -19,7 +20,7 @@ const Dashboard = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
 
-    const isAdmin = true;
+    const [isAdmin] = useAdmin();
 
     const adminLinks = [
         { icon: <FaHome />, text: "My Home", path: "/dashboard/adminHome" },
