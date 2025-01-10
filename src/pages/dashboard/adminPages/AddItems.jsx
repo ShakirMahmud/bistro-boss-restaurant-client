@@ -35,7 +35,6 @@ const AddItems = () => {
             const imageResult = await imageResponse.data;
 
             if (imageResult.success) {
-                console.log("Image uploaded:", imageResult.data.display_url);
                 // Prepare menu item
                 const menuItem = {
                     name: data.name,
@@ -47,6 +46,7 @@ const AddItems = () => {
 
                 // Add menu item to database
                 const response = await axiosSecure.post('/menu', menuItem);
+                console.log(response.data);
 
                 if (response.data.insertedId) {
                     // Success notification

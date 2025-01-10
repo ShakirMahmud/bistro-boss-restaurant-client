@@ -74,7 +74,7 @@ const FoodCard = ({ item }) => {
             <img
                 src={item.image}
                 alt={item.name}
-                className="w-full h-52 object-cover"
+                className="w-full h-52 object-contain"
             />
 
             {/* Content */}

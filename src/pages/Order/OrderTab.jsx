@@ -35,7 +35,7 @@ const OrderTab = ({ items }) => {
 
     const swiperStyle = {
         width: "100%",
-        paddingBottom: "120px", // Accommodates multiple lines
+        paddingBottom: "120px",
     };
 
     const swiperSlideStyle = {
