@@ -4,10 +4,12 @@ import { FaUtensils } from "react-icons/fa";
 import SectionTitle from "../../../components/SectionTitle";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
 const AddItems = () => {
     const [loading, setLoading] = useState(false);
     const axiosSecure = useAxiosSecure();
+    const axiosPublic = useAxiosPublic();
     const {
         register,
         handleSubmit,
@@ -16,69 +18,69 @@ const AddItems = () => {
     } = useForm();
 
     // Image hosting API (Replace with your actual API)
-    // const IMAGE_HOSTING_KEY = import.meta.env.VITE_IMAGE_HOSTING_KEY;
-    // const IMAGE_HOSTING_API = `https://api.imgbb.com/1/upload?key=${IMAGE_HOSTING_KEY}`;
+    const IMAGE_HOSTING_KEY = import.meta.env.VITE_IMAGE_HOSTING_KEY;
+    const IMAGE_HOSTING_API = `https://api.imgbb.com/1/upload?key=${IMAGE_HOSTING_KEY}`;
 
-    // const onSubmit = async (data) => {
-    //     setLoading(true);
-    //     try {
-    //         // Image upload
-    //         const imageFile = data.image[0];
-    //         const formData = new FormData();
-    //         formData.append('image', imageFile);
+    const onSubmit = async (data) => {
 
-    //         const imageResponse = await fetch(IMAGE_HOSTING_API, {
-    //             method: 'POST',
-    //             body: formData
-    //         });
-    //         const imageResult = await imageResponse.json();
+        setLoading(true);
+        try {
+            // Image upload
+            const imageFile = {image: data.image[0]};
+            const imageResponse = await axiosPublic.post(IMAGE_HOSTING_API, imageFile,{
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            const imageResult = await imageResponse.data;
 
-    //         if (imageResult.success) {
-    //             // Prepare menu item
-    //             const menuItem = {
-    //                 name: data.name,
-    //                 category: data.category,
-    //                 price: parseFloat(data.price),
-    //                 recipe: data.recipe,
-    //                 image: imageResult.data.display_url
-    //             };
+            if (imageResult.success) {
+                console.log("Image uploaded:", imageResult.data.display_url);
+                // Prepare menu item
+                const menuItem = {
+                    name: data.name,
+                    category: data.category,
+                    price: parseFloat(data.price),
+                    recipe: data.recipe,
+                    image: imageResult.data.display_url
+                };
 
-    //             // Send to server
-    //             const response = await axiosSecure.post('/menu', menuItem);
+                // Add menu item to database
+                const response = await axiosSecure.post('/menu', menuItem);
 
-    //             if (response.data.insertedId) {
-    //                 // Success notification
-    //                 Swal.fire({
-    //                     position: "top-end",
-    //                     icon: "success",
-    //                     title: `${data.name} added to menu`,
-    //                     showConfirmButton: false,
-    //                     timer: 1500
-    //                 });
-    //                 reset();
-    //             }
-    //         }
-    //     } catch (error) {
-    //         console.error("Error adding item:", error);
-    //         Swal.fire({
-    //             icon: 'error',
-    //             title: 'Oops...',
-    //             text: 'Something went wrong!'
-    //         });
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // };
+                if (response.data.insertedId) {
+                    // Success notification
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: `${data.name} added to menu`,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    reset();
+                }
+            }
+        } catch (error) {
+            console.error("Error adding item:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!'
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
-        <div className="w-4/5 mx-auto px-4 mb-10">
+        <div className="w-11/12 lg:w-4/5 mx-auto px-4 mb-10">
             <SectionTitle
                 heading="Add an Item"
                 subHeading="---What's New---"
             />
 
             <div className="bg-white shadow-md rounded-lg p-8">
-                <form className="space-y-6">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                     {/* Recipe Name */}
                     <div>
                         <label className="block text-gray-700 font-bold mb-2">
