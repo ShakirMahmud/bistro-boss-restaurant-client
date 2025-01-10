@@ -1,15 +1,19 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import SectionTitle from "../../../components/SectionTitle";
 import { useForm } from "react-hook-form";
 import { FaUtensils } from "react-icons/fa";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import Swal from "sweetalert2";
 
 const UpdateItem = () => {
     const { id } = useParams();
     const [loading, setLoading] = useState(false);
     const axiosPublic = useAxiosPublic();
+    const axiosSecure = useAxiosSecure();
+    const navigate = useNavigate();
     const {
         register,
         handleSubmit,
@@ -17,19 +21,74 @@ const UpdateItem = () => {
         formState: { errors }
     } = useForm();
 
-    const { data: item, isLoading } = useQuery({
+    const { data: item, isLoading, refetch } = useQuery({
         queryKey: ['item', id],
         queryFn: async () => {
             const res = await axiosPublic.get(`/menu/${id}`);
             return res.data;
         }
-    })
-    console.log(item);
+    });
 
-    const onSubmit = (data) => {
-        // setLoading(true);
-        console.log(data);
+    const IMAGE_HOSTING_KEY = import.meta.env.VITE_IMAGE_HOSTING_KEY;
+    const IMAGE_HOSTING_API = `https://api.imgbb.com/1/upload?key=${IMAGE_HOSTING_KEY}`;
 
+    const onSubmit = async (data) => {
+        setLoading(true);
+        try {
+            // Prepare menuItem object with existing item details
+            let menuItem = {
+                name: data.name,
+                category: data.category,
+                price: parseFloat(data.price),
+                recipe: data.recipe,
+                image: item.image // Default to existing image
+            };
+    
+            // Check if a new image is uploaded
+            if (data.image && data.image.length > 0) {
+                // Image upload
+                const imageFile = { image: data.image[0] };
+                const imageResponse = await axiosPublic.post(IMAGE_HOSTING_API, imageFile, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+                const imageResult = imageResponse.data;
+                console.log(imageResult);
+    
+                // If image upload is successful, update the image URL
+                if (imageResult.success) {
+                    menuItem.image = imageResult.data.display_url;
+                }
+            }
+    
+            // Update menu item in database
+            const response = await axiosSecure.patch(`/menu/${id}`, menuItem);
+    
+            if (response.data.modifiedCount > 0) {
+                // Success notification
+                Swal.fire({
+                    position: "top-end",
+                    toast: true,
+                    icon: "success",
+                    title: `${data.name} updated successfully!`,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                reset();
+            }
+        } catch (error) {
+            console.error("Error updating item:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!'
+            });
+        } finally {
+            setLoading(false);
+            navigate('/dashboard/manageItems');
+            refetch();
+        }
     }
 
     if (isLoading) {
@@ -152,15 +211,13 @@ const UpdateItem = () => {
                     {/* Image Upload */}
                     <div>
                         <label className="block text-gray-700 font-bold mb-2">
-                           Update Recipe Image*
+                            Update Recipe Image*
                         </label>
                         <input
                             type="file"
                             accept="image/*"
                             className="file-input file-input-bordered file-input-warning w-full"
-                            {...register("image", {
-                                required: "Image is required"
-                            })}
+                            {...register("image")}
                         />
                         {errors.image && (
                             <p className="text-red-500 text-sm mt-1">

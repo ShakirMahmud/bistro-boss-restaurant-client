@@ -5,9 +5,10 @@ import SectionTitle from "../../../components/SectionTitle";
 import useMenu from "../../../hooks/useMenu";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import Loading from "../../Loading";
 
 const ManageItems = () => {
-    const [menu, , refetch] = useMenu();
+    const [menu, loading, refetch] = useMenu();
     const navigate = useNavigate();
     const axiosSecure = useAxiosSecure();
     const [searchTerm, setSearchTerm] = useState("");
@@ -52,6 +53,10 @@ const ManageItems = () => {
             }
         });
     };
+
+    if(loading){
+        return <Loading/>;
+    }
 
     return (
         <div className="w-11/12 lg:w-4/5 mx-auto px-4 mb-10">
