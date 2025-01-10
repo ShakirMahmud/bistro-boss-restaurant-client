@@ -35,16 +35,14 @@ const UpdateItem = () => {
     const onSubmit = async (data) => {
         setLoading(true);
         try {
-            // Prepare menuItem object with existing item details
             let menuItem = {
                 name: data.name,
                 category: data.category,
                 price: parseFloat(data.price),
                 recipe: data.recipe,
-                image: item.image // Default to existing image
+                image: item.image 
             };
     
-            // Check if a new image is uploaded
             if (data.image && data.image.length > 0) {
                 // Image upload
                 const imageFile = { image: data.image[0] };
@@ -56,7 +54,6 @@ const UpdateItem = () => {
                 const imageResult = imageResponse.data;
                 console.log(imageResult);
     
-                // If image upload is successful, update the image URL
                 if (imageResult.success) {
                     menuItem.image = imageResult.data.display_url;
                 }
