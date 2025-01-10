@@ -2,16 +2,15 @@ import { Link, NavLink } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import useCart from "../../hooks/useCart";
 
-const getActiveClass = ({ isActive }) => 'font-bold  ' + (isActive ? "text-[#EEFF25]" : "text-white");
+const getActiveClass = ({ isActive }) => 'font-bold' + (isActive ? "text-[#EEFF25]" : "text-white");
 const Navbar = () => {
     const { user, logOut, loading } = useAuth();
-    const [cart ] = useCart();
+    const [cart] = useCart();
 
     const links = <>
         <li><NavLink className={getActiveClass} to="/">Home</NavLink></li>
         <li><NavLink className={getActiveClass} to="/menu">Our Menu</NavLink></li>
         <li><NavLink className={getActiveClass} to="/order">Our Shop </NavLink></li>
-
     </>
     return (
         <div className="">

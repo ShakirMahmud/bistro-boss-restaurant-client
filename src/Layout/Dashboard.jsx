@@ -24,7 +24,7 @@ const Dashboard = () => {
 
     const adminLinks = [
         { icon: <FaHome />, text: "My Home", path: "/dashboard/adminHome" },
-        { icon: <FaUtensils />, text: "Add Item", path: "/dashboard/addItem" },
+        { icon: <FaUtensils />, text: "Add Item", path: "/dashboard/addItems" },
         { icon: <FaList />, text: "Manage Items", path: "/dashboard/manageItems" },
         { icon: <FaCalendar />, text: "Manage Bookings", path: "/dashboard/bookings" },
         { icon: <FaUsers />, text: "All Users", path: "/dashboard/users" },
