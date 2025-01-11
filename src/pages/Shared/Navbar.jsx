@@ -2,7 +2,7 @@ import { Link, NavLink } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import useCart from "../../hooks/useCart";
 
-const getActiveClass = ({ isActive }) => 'font-bold' + (isActive ? "text-[#EEFF25]" : "text-white");
+const getActiveClass = ({ isActive }) => 'font-bold ' + (isActive ? "text-[#EEFF25]" : "text-white");
 const Navbar = () => {
     const { user, logOut, loading } = useAuth();
     const [cart] = useCart();

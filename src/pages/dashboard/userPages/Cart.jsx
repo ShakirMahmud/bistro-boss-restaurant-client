@@ -4,11 +4,13 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import SectionTitle from "../../../components/SectionTitle";
 import useCart from "../../../hooks/useCart";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
     const axiosSecure = useAxiosSecure();
     const [cart, refetch, isLoading] = useCart();
     const [total, setTotal] = useState(0);
+    const navigate = useNavigate();
 
     // Use useEffect to calculate total when cart changes
     useEffect(() => {
@@ -85,6 +87,7 @@ const Cart = () => {
                     </h2>
                 </div>
                 <button
+                    onClick={() => navigate('/dashboard/payment')}
                     disabled={cart.length === 0}
                     className="w-full bg-[#BB8506] text-white py-2 rounded-lg 
                     hover:bg-[#9c6e05] transition duration-300

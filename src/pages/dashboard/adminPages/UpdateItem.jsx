@@ -17,7 +17,6 @@ const UpdateItem = () => {
     const {
         register,
         handleSubmit,
-        reset,
         formState: { errors }
     } = useForm();
 
@@ -72,7 +71,6 @@ const UpdateItem = () => {
                     showConfirmButton: false,
                     timer: 1500
                 });
-                reset();
             }
         } catch (error) {
             console.error("Error updating item:", error);
