@@ -5,8 +5,10 @@ import Swal from 'sweetalert2';
 import useAxiosSecure from './../../../hooks/useAxiosSecure';
 import useCart from './../../../hooks/useCart';
 import axios from 'axios';
+import useAuth from '../../../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
-const CheckoutForm = ( ) => {
+const CheckoutForm = () => {
     const stripe = useStripe();
     const elements = useElements();
     const [processing, setProcessing] = useState(false);
@@ -15,8 +17,10 @@ const CheckoutForm = ( ) => {
     const [clientSecrete, setClientSecrete] = useState('');
     const axiosSecure = useAxiosSecure();
     const [totalPrice, setTotalPrice] = useState(0);
-    const [cart, isLoading] = useCart();
-    
+    const [cart, refetch, isLoading] = useCart();
+    const { user } = useAuth();
+    const navigate = useNavigate();
+
     useEffect(() => {
         if (cart && cart.length > 0) {
             const price = cart.reduce((sum, item) => sum + item.price, 0);
@@ -27,16 +31,16 @@ const CheckoutForm = ( ) => {
     }, [cart]);
 
     useEffect(() => {
-        axiosSecure.post('/payment', {
-            price: totalPrice
-        })
-        .then(response => {
-            console.log(response.data.clientSecret);
-            setClientSecrete(response.data.clientSecret);
-        })
-        .catch(error => {
-            console.error('Payment Error:', error);
-        });
+        if (totalPrice > 0) {
+            console.log('totalPrice', totalPrice);
+            axiosSecure.post('/payments/paymentIntent', {
+                price: totalPrice
+            })
+                .then(response => {
+                    // console.log(response.data.clientSecret);
+                    setClientSecrete(response.data.clientSecret);
+                })
+        }
     }, [axiosSecure, totalPrice]);
 
     const handleSubmit = async (event) => {
@@ -59,8 +63,6 @@ const CheckoutForm = ( ) => {
             card
         });
 
-
-
         if (error) {
             console.log('[error]', error);
             setError(error.message);
@@ -68,37 +70,56 @@ const CheckoutForm = ( ) => {
         } else {
             setError(null);
             console.log('[PaymentMethod]', paymentMethod);
-            
-            // Here you would typically call your backend to confirm payment
-            try {
-                // Example backend call
-                // const response = await axiosSecure.post('/payments', {
-                //     price,
-                //     transactionId: paymentMethod.id
-                // });
+        }
 
+        const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(clientSecrete, {
+            payment_method: {
+                card: card,
+                billing_details: {
+                    email: user?.email || 'anonymous',
+                    name: user?.displayName || 'anonymous',
+                }
+            }
+        })
+
+        if (confirmError) {
+            setError(confirmError.message);
+            return;
+        }
+        if (paymentIntent) {
+            console.log(paymentIntent);
+            if (paymentIntent.status === 'succeeded') {
+                setTransactionId(paymentIntent.id);
+                setProcessing(false);
                 Swal.fire({
+                    position: 'top-end',
                     icon: 'success',
-                    title: 'Payment Successful',
-                    text: `Transaction ID: ${paymentMethod.id}`
-                });
+                    toast: true,
+                    title: `Payment Successful! Your Transaction ID: ${paymentIntent.id}`,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                // save the transaction to the server
+                const payment = {
+                    email: user?.email || 'anonymous',
+                    name: user?.displayName || 'anonymous',
+                    transactionId: paymentIntent.id,
+                    date: new Date(),
+                    quantity: cart.length,
+                    cartItems: cart.map(item => item._id),
+                    menuItems: cart.map(item => item.menuId),
+                    price: totalPrice,
+                    status: 'pending',
+                }
 
-                setTransactionId(paymentMethod.id);
-                setProcessing(false);
-            } catch (err) {
-                console.error('Payment Error:', err);
-                setProcessing(false);
+                const res = await axiosSecure.post('/payments', payment)
+                console.log(res.data);
+                refetch();
+                navigate('/dashboard/paymentHistory');
             }
         }
-    };
+    }
 
-    // if (isLoading) {
-    //     return (
-    //         <div className="text-center">
-    //             <FaSpinner className="loading loading-spinner" />
-    //         </div>
-    //     );
-    // }
 
     return (
         <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg p-8">
@@ -165,7 +186,7 @@ const CheckoutForm = ( ) => {
                 {transactionId && (
                     <div className="mt-4 text-center">
                         <p className="text-green-600">
-                            Transaction Completed: 
+                            Transaction Completed:
                             <span className="font-bold ml-2">{transactionId}</span>
                         </p>
                     </div>

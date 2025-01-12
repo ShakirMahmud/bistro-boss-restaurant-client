@@ -4,6 +4,7 @@ import { FaCalendar, FaHome, FaShoppingCart, FaStar, FaWallet, FaBars, FaTimes, 
 import { Link, NavLink, Outlet } from "react-router-dom";
 import useAuth from '../hooks/useAuth';
 import useAdmin from '../hooks/useAdmin';
+import useCart from '../hooks/useCart';
 
 const getActiveClass = ({ isActive }) =>
     `flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-300 ${isActive
@@ -15,6 +16,7 @@ const Dashboard = () => {
 
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const { logOut } = useAuth();
+    const [cart] = useCart();
 
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
@@ -32,9 +34,9 @@ const Dashboard = () => {
 
     const userLinks = [
         { icon: <FaHome />, text: "My Home", path: "/dashboard/userHome" },
-        { icon: <FaWallet />, text: "Payment History", path: "/dashboard/payment" },
+        { icon: <FaWallet />, text: "Payment History", path: "/dashboard/paymentHistory" },
         { icon: <FaCalendar />, text: "Reservation", path: "/dashboard/reservation" },
-        { icon: <FaShoppingCart />, text: "My Cart", path: "/dashboard/cart" },
+        { icon: <FaShoppingCart />, text: `My Cart(${cart?.length})`, path: "/dashboard/cart" },
         { icon: <FaStar />, text: "Add Review", path: "/dashboard/review" },
         { icon: <BsFillCalendar3EventFill />, text: "My Booking", path: "/dashboard/booking" },
     ];
