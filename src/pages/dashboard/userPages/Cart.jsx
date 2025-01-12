@@ -23,7 +23,6 @@ const Cart = () => {
     }, [cart]);
 
     const handleDelete = (id) => {
-
         Swal.fire({
             title: 'Are you sure?',
             text: 'You will not be able to recover this item!',
@@ -54,9 +53,6 @@ const Cart = () => {
                     });
             }
         })
-
-
-
     };
 
     // Loading State

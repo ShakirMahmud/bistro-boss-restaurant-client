@@ -1,14 +1,43 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { FaCreditCard, FaMoneyCheckAlt } from 'react-icons/fa';
+import { FaCreditCard, FaMoneyCheckAlt, FaSpinner } from 'react-icons/fa';
 import Swal from 'sweetalert2';
+import useAxiosSecure from './../../../hooks/useAxiosSecure';
+import useCart from './../../../hooks/useCart';
+import axios from 'axios';
 
-const CheckoutForm = ({ price }) => {
+const CheckoutForm = ( ) => {
     const stripe = useStripe();
     const elements = useElements();
     const [processing, setProcessing] = useState(false);
     const [error, setError] = useState(null);
     const [transactionId, setTransactionId] = useState('');
+    const [clientSecrete, setClientSecrete] = useState('');
+    const axiosSecure = useAxiosSecure();
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [cart, isLoading] = useCart();
+    
+    useEffect(() => {
+        if (cart && cart.length > 0) {
+            const price = cart.reduce((sum, item) => sum + item.price, 0);
+            setTotalPrice(price);
+        } else {
+            setTotalPrice(0);
+        }
+    }, [cart]);
+
+    useEffect(() => {
+        axiosSecure.post('/payment', {
+            price: totalPrice
+        })
+        .then(response => {
+            console.log(response.data.clientSecret);
+            setClientSecrete(response.data.clientSecret);
+        })
+        .catch(error => {
+            console.error('Payment Error:', error);
+        });
+    }, [axiosSecure, totalPrice]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -29,6 +58,8 @@ const CheckoutForm = ({ price }) => {
             type: 'card',
             card
         });
+
+
 
         if (error) {
             console.log('[error]', error);
@@ -60,6 +91,14 @@ const CheckoutForm = ({ price }) => {
             }
         }
     };
+
+    // if (isLoading) {
+    //     return (
+    //         <div className="text-center">
+    //             <FaSpinner className="loading loading-spinner" />
+    //         </div>
+    //     );
+    // }
 
     return (
         <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg p-8">
@@ -101,13 +140,13 @@ const CheckoutForm = ({ price }) => {
                     <div className="flex items-center">
                         <FaCreditCard className="text-[#BB8506] mr-2" />
                         <span className="text-gray-700">Total Amount:</span>
-                        <span className="font-bold ml-2 text-[#BB8506]">${price}</span>
+                        <span className="font-bold ml-2 text-[#BB8506]">${totalPrice}</span>
                     </div>
                 </div>
 
                 <button
                     type="submit"
-                    disabled={!stripe || processing}
+                    disabled={!stripe || processing || !clientSecrete || error}
                     className="w-full bg-[#BB8506] text-white py-3 rounded-lg 
                     hover:bg-[#9c6e05] transition duration-300 
                     flex items-center justify-center
