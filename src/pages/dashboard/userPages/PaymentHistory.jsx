@@ -115,7 +115,7 @@ const PaymentHistory = () => {
                                         {formatDate(payment.date)}
                                     </td>
                                     <td className="p-4 text-lg font-semibold text-[#BB8506]">
-                                        ${payment.price.toFixed(2)}
+                                        ${payment.price}
                                     </td>
                                     <td className="p-4">
                                         <span className={`
