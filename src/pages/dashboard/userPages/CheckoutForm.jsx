@@ -4,7 +4,6 @@ import { FaCreditCard, FaMoneyCheckAlt, FaSpinner } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import useAxiosSecure from './../../../hooks/useAxiosSecure';
 import useCart from './../../../hooks/useCart';
-import axios from 'axios';
 import useAuth from '../../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 
