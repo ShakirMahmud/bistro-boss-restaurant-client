@@ -4,13 +4,11 @@ import {
     FaHamburger, 
     FaShoppingCart, 
     FaDollarSign, 
-    FaChartLine,
     FaClipboardList,
     FaMoneyBillWave
 } from "react-icons/fa";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import SectionTitle from "../../../components/SectionTitle";
 
 const AdminHome = () => {
     const { user } = useAuth();
@@ -112,52 +110,6 @@ const AdminHome = () => {
                     value={`$${revenue.toFixed(2)}`}
                     bgColor="bg-yellow-500"
                 />
-            </div>
-
-            {/* Additional Insights */}
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Quick Actions */}
-                <div className="bg-white shadow-md rounded-lg p-6">
-                    <h3 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
-                        <FaClipboardList className="mr-3 text-[#BB8506]" />
-                        Quick Actions
-                    </h3>
-                    <div className="space-y-3">
-                        <button className="w-full bg-[#BB8506] text-white py-2 rounded-lg hover:bg-[#9c6e05] transition">
-                            Manage Menu
-                        </button>
-                        <button className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition">
-                            View Orders
-                        </button>
-                        <button className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">
-                            Manage Users
-                        </button>
-                    </div>
-                </div>
-
-                {/* Revenue Insights */}
-                <div className="bg-white shadow-md rounded-lg p-6">
-                    <h3 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
-                        <FaMoneyBillWave className="mr-3 text-green-500" />
-                        Revenue Insights
-                    </h3>
-                    <div className="space-y-3">
-                        <div className="flex justify-between items-center">
-                            <span>Average Order Value</span>
-                            <span className="font-bold text-[#BB8506]">
-                                ${revenue && ordersCount 
-                                    ? (revenue / ordersCount).toFixed(2) 
-                                    : '0.00'}
-                            </span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                            <span>Total Transactions</span>
-                            <span className="font-bold text-green-500">
-                                {ordersCount}
-                            </span>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     );

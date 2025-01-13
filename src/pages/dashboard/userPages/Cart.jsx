@@ -12,6 +12,10 @@ const Cart = () => {
     const [total, setTotal] = useState(0);
     const navigate = useNavigate();
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     // Use useEffect to calculate total when cart changes
     useEffect(() => {
         if (cart && cart.length > 0) {
