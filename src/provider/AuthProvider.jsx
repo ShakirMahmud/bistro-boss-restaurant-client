@@ -64,13 +64,15 @@ const AuthProvider = ({children}) => {
                         if(data.data.token){
                             // set token
                             localStorage.setItem('token', data.data.token);
+                            setLoading(false);
                         }
                     })
             }else{
                 // remove token
                 localStorage.removeItem('token');
+                setLoading(false);
             }
-            setLoading(false);
+            
         });
         return () => unsubscribe();
     }, [axiosPublic])
