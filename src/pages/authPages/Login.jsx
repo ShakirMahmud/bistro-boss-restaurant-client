@@ -28,7 +28,7 @@ const Login = () => {
 
     const sweetAlert = () => {
         Swal.fire({
-            title: "Sign-Up Successful!",
+            title: "Sign-In Successful!",
             text: "You have successfully signed in. You will be redirected shortly, or click OK to proceed immediately.",
             icon: "success",
             confirmButtonText: "OK",
